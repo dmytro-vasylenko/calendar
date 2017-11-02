@@ -1,27 +1,9 @@
 import React, {Component} from "react";
+import {connect} from "react-redux";
 
-import Event from "../components/Event";
+import Event from "../containers/Event";
 
 class Events extends Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			events: [
-				{start: 0, duration: 400, title: "Exercise"},
-				{start: 25, duration: 30, title: "Travel to work"},
-				{start: 30, duration: 30, title: "Push up branch"},
-				{start: 60, duration: 15, title: "Plan day"},
-				{start: 100, duration: 15, title: "Review yestarday's commits"},
-				{start: 180, duration: 90, title: "Code review"},
-				{start: 360, duration: 15, title: "Have lunch with John"},
-				{start: 370, duration: 45, title: "Skype call"},
-				{start: 380, duration: 20, title: "Follow up with designer"},
-				{start: 390, duration: 10, title: "Follow up with designer"}
-			]
-		};
-	}
-
 	devideEvents(events) {
 		let separate = events[0].isCrossed;
 		let clusters = [];
@@ -110,8 +92,21 @@ class Events extends Component {
 		}
 	}
 
+	allShouldMoved(column) {
+		for(let item of column) {
+			if(!item.shouldMoved) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	render() {
-		let {events} = this.state;
+		let {events} = this.props;
+
+		if(!events.length) {
+			return <div />;
+		}
 
 		for(let eventA of events) {
 			for(let eventB of events) {
@@ -131,10 +126,14 @@ class Events extends Component {
 
 		return (
 			<div className="events">
-				{this.state.events.map((event, index) => <Event {...event} key={index} />)}
+				{this.props.events.map((event, index) => <Event {...event} key={index} />)}
 			</div>
 		);
 	}
 }
 
-export default Events;
+const mapStateToProps = state => ({
+	events: state.events
+});
+
+export default connect(mapStateToProps)(Events);
