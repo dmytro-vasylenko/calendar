@@ -1,14 +1,20 @@
 import React, {Component} from "react";
 
 import Scale from "./containers/Scale";
-import Events from "./containers/Events";
+import AddEvent from "./components/AddEvent";
+import Events from "./components/Events";
+import Login from "./components/Login";
+
 
 class App extends Component {
 	render() {
 		return (
 			<div className="wrapper">
-				<Scale />
-				<Events />
+				<Login>
+					<Scale />
+					<Events />
+					<AddEvent />
+				</Login>
 			</div>
 		);
 	}
